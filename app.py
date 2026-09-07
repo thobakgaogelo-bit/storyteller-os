@@ -6,6 +6,7 @@ from queries import (
     get_phase_progress,
     get_current_milestone,
     get_next_task,
+    mark_task_done,
 )
 
 st.set_page_config(page_title="Storyteller OS", layout="centered")
@@ -59,3 +60,9 @@ else:
     if task.get("description"):
         st.write(task["description"])
     st.caption(f"Scheduled for {task['scheduled_date']}")
+
+    notes = st.text_input("Notes (optional)", key=f"notes_{task['id']}")
+
+    if st.button("DONE", type="primary", key=f"done_{task['id']}"):
+        mark_task_done(task["id"], notes if notes else None)
+        st.rerun()
